@@ -1,11 +1,18 @@
 import os
 import json
 import google.generativeai as genai
+import streamlit as st
 
 working_directory = os.path.dirname(os.path.abspath(__file__))
 config_file_path = os.path.join(working_directory, "config.json")
 
-if os.path.exists(config_file_path):
+# 1. Look for Streamlit Cloud Secrets first (Production environment)
+if "GOOGLE_API_KEY" in st.secrets:
+    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+    genai.configure(api_key=GOOGLE_API_KEY)
+
+# 2. Fall back to local file if secrets aren't there (Your Laptop environment)
+elif os.path.exists(config_file_path):
     with open(config_file_path, "r") as file:
         config_data = json.load(file)
     GOOGLE_API_KEY = config_data.get("GOOGLE_API_KEY", "")
