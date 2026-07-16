@@ -72,7 +72,7 @@ if selected == "Chatbot":
 # image section
 # image section
 if selected == "Image captionong":
-    st.title=("🖼️ Image captionong")
+    st.title("🖼️ Image captionong")
     
     if "image_caption" not in st.session_state:
         st.session_state.image_caption = ""
