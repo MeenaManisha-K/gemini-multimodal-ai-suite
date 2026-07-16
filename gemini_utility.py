@@ -6,18 +6,25 @@ import streamlit as st
 working_directory = os.path.dirname(os.path.abspath(__file__))
 config_file_path = os.path.join(working_directory, "config.json")
 
-# 1. Look for Streamlit Cloud Secrets first (Production environment)
-if "GOOGLE_API_KEY" in st.secrets:
-    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=GOOGLE_API_KEY)
+# --- FIXED SECTION ---
+GOOGLE_API_KEY = None
 
-# 2. Fall back to local file if secrets aren't there (Your Laptop environment)
-elif os.path.exists(config_file_path):
+# 1. First check if we are on your local laptop using the config.json file
+if os.path.exists(config_file_path):
     with open(config_file_path, "r") as file:
         config_data = json.load(file)
     GOOGLE_API_KEY = config_data.get("GOOGLE_API_KEY", "")
-    if GOOGLE_API_KEY:
-        genai.configure(api_key=GOOGLE_API_KEY)
+
+# 2. If config.json doesn't exist, we must be on Streamlit Cloud (Production)
+elif "GOOGLE_API_KEY" in st.secrets:
+    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+
+# 3. Apply the key if found, otherwise show an error
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
+else:
+    st.error("API Key missing! Please check config.json or Streamlit Cloud Secrets.")
+# ---------------------
 
 def load_gemini_pro_model():
    
