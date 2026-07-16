@@ -28,11 +28,11 @@ else:
     st.error("⚠️ API Key is missing!")
 
 def load_gemini_pro_model():
-    return genai.GenerativeModel("gemini-1.5-flash")
+    return genai.GenerativeModel("gemini-2.5-flash")
 
 def gemini_pro_vision_response(prompt, image):
     # FIXED: Uses standard active flash model to process images
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.5-flash")
     response = model.generate_content([prompt, image])
     return response.text
 
@@ -45,6 +45,6 @@ def embedding_model_response(input_text):
     return embedding["embedding"]
 
 def gemini_pro_response(user_prompt):
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.5-flash")
     response = model.generate_content(user_prompt)
     return response.text
