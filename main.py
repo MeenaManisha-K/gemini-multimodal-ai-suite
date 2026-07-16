@@ -45,7 +45,7 @@ if selected == "Chatbot":
     if "chat_session" not in st.session_state:
         st.session_state.chat_session = model.start_chat(history=[])
 
-    st.title=("🤖 Chatbot")
+    st.title("🤖 Chatbot")
 
     for message in st.session_state.chat_session.history:
         with st.chat_message(translate_role_streamlit(message.role)):
@@ -55,11 +55,21 @@ if selected == "Chatbot":
 
     if user_prompt:
         st.chat_message("user").markdown(user_prompt)
-        gemini_response = st.session_state.chat_session.send_message(user_prompt)
         
-        with st.chat_message("assistant"):
-            st.markdown(gemini_response.text)
+        # --- FIXED: Added try-except to catch 429 errors ---
+        try:
+            gemini_response = st.session_state.chat_session.send_message(user_prompt)
+            with st.chat_message("assistant"):
+                st.markdown(gemini_response.text)
+        except Exception as e:
+            with st.chat_message("assistant"):
+                st.error(
+                    "⚠️ Quota Exceeded / Too Many Requests. The free tier limits requests to 20 per window. "
+                    "Please wait about 60 seconds before trying again, or upgrade your billing tier."
+                )
 
+
+# image section
 # image section
 if selected == "Image captionong":
     st.title=("🖼️ Image captionong")
@@ -85,11 +95,10 @@ if selected == "Image captionong":
         if st.session_state.image_caption:
             with col2:
                 st.info(st.session_state.image_caption)
-
 #text embedding
 
 if selected == "Embedded Text":
-    st.title=("💬 Embedding Text")
+    st.title("💬 Embedding Text")
 
     input_text = st.text_area(label="", placeholder="enter the text to get embeddings")
     
@@ -107,7 +116,7 @@ if selected == "Embedded Text":
 
 #ask me anyhting
 if selected == "Ask me anything":
-    st.title=("❓ ask me anything")
+    st.title("❓ ask me anything")
 
     user_prompt=st.text_area(label="",placeholder="ask gemini pro")
     if st.button("get response"):
@@ -121,6 +130,3 @@ if selected == "Ask me anything":
                     st.code(str(response))
                 except Exception as e:
                     st.error(f"API Error: {e}")
-
-
-

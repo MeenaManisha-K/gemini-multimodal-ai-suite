@@ -13,20 +13,19 @@ if os.path.exists(config_file_path):
         genai.configure(api_key=GOOGLE_API_KEY)
 
 def load_gemini_pro_model():
-    # Use gemini-2.5-flash instead of the deprecated gemini-pro
-    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash")
+   
+    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash-lite")
     return gemini_pro_model
 
 def gemini_pro_vision_response(prompt, image):
-    # Use gemini-2.5-flash instead of the deprecated gemini-pro-vision
-    gemini_pro_vision_model = genai.GenerativeModel("gemini-2.5-flash")
+   
+    gemini_pro_vision_model = genai.GenerativeModel("gemini-2.5-flash-lite")
     response = gemini_pro_vision_model.generate_content([prompt, image])
     result = response.text
     return result
 
-#function to get embedding text
+# function to get embedding text
 def embedding_model_response(input_text):
-    # CHANGED: Switched to the modern active model name
     embedding_model = "models/gemini-embedding-001" 
     
     embedding = genai.embed_content(
@@ -38,10 +37,10 @@ def embedding_model_response(input_text):
     embedding_list = embedding["embedding"]
     return embedding_list
 
-#function to get respnse from gemini pro from llm
-
+# function to get response from gemini pro from llm
 def gemini_pro_response(user_prompt):
-      gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash")
-      response=gemini_pro_model.generate_content(user_prompt)
-      result=response.text
-      return result
+ 
+    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash-lite")
+    response = gemini_pro_model.generate_content(user_prompt)
+    result = response.text
+    return result
