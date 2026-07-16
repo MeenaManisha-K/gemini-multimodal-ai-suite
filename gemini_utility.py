@@ -28,12 +28,12 @@ else:
 
 def load_gemini_pro_model():
    
-    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash-lite")
+    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash")
     return gemini_pro_model
 
 def gemini_pro_vision_response(prompt, image):
    
-    gemini_pro_vision_model = genai.GenerativeModel("gemini-2.5-flash-lite")
+    gemini_pro_vision_model = genai.GenerativeModel("gemini-2.5-flash")
     response = gemini_pro_vision_model.generate_content([prompt, image])
     result = response.text
     return result
@@ -54,7 +54,7 @@ def embedding_model_response(input_text):
 # function to get response from gemini pro from llm
 def gemini_pro_response(user_prompt):
  
-    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash-lite")
+    gemini_pro_model = genai.GenerativeModel("gemini-2.5-flash")
     response = gemini_pro_model.generate_content(user_prompt)
     result = response.text
     return result
